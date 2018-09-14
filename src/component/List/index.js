@@ -1,16 +1,16 @@
 import React, { PureComponent } from 'react'
-import { ActivityIndicator, SectionList, View } from 'react-native'
-import PropTypes from 'prop-types'
-import Header from './Header'
-import Item from './Item'
+import { ActivityIndicator, SectionList } from 'react-native'
 import { MSection } from '../../model'
+import PropTypes from 'prop-types'
+import { Header } from '../General'
+import Item from './Item'
 
 class List extends PureComponent {
   /**
    * Render header for section list
    */
-  renderSectionHeader = section => {
-    const { title } = section
+  renderSectionHeader = data => {
+    const { title } = data.section
     return <Header title={title} />
   }
 

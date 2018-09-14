@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { View, Image, Text } from 'react-native'
+import styles from './styles'
 
 class Item extends PureComponent {
   /**
@@ -16,10 +17,10 @@ class Item extends PureComponent {
     const { item } = this.props
     const { image, title, rightItem } = item
     return (
-      <View>
-        <View>
-          <Image source={{ uri: image }} />
-          <View>
+      <View style={styles.itemContainer}>
+        <View style={styles.itemInfo}>
+          <Image style={styles.smallImage} source={{ uri: image }} />
+          <View style={styles.itemInfoText}>
             <Text>{title}</Text>
             {this.renderDescription()}
           </View>

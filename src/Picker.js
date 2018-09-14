@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { Modal } from 'react-native'
-import { List } from './component'
+import { View, Modal, SafeAreaView } from 'react-native'
+import { List, Alpha } from './component'
 import DataType, { BuiltInData } from './static'
+import styles from './styles'
 
 class RNPicker extends PureComponent {
   constructor(props) {
@@ -43,7 +44,16 @@ class RNPicker extends PureComponent {
     const { animationType, renderSectionHeader, renderItem, onSelect } = this.props
     return (
       <Modal visible={isShowModal} transparent={false} animationType={animationType}>
-        <List data={data} renderSectionHeader={renderSectionHeader} renderItem={renderItem} onSelect={onSelect} />
+        <SafeAreaView>
+          <View style={styles.listContainer}>
+            <View style={styles.listData}>
+              <List data={data} renderSectionHeader={renderSectionHeader} renderItem={renderItem} onSelect={onSelect} />
+            </View>
+            <View style={styles.listAlpha}>
+              <Alpha data={data} />
+            </View>
+          </View>
+        </SafeAreaView>
       </Modal>
     )
   }
