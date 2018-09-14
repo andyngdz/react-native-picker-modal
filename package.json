@@ -23,7 +23,6 @@
     "url": "https://github.com/itanhduy/react-native-picker/issues"
   },
   "homepage": "https://github.com/itanhduy/react-native-picker#readme",
-  "dependencies": {},
   "devDependencies": {
     "react": "^16.5.1",
     "react-native": "^0.57.0"
