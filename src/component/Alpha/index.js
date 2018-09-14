@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { FlatList } from 'react-native'
+import { FlatList, SectionList, TouchableOpacity } from 'react-native'
 import PropTypes from 'prop-types'
 import { first } from 'lodash'
 import { MSection } from '../..//model'
@@ -14,7 +14,21 @@ class Alpha extends PureComponent {
   renderItem = ({ item }) => {
     const { title } = item
     const firstChar = first(title)
-    return <CircleItem text={firstChar} />
+    return (
+      <TouchableOpacity onPress={() => this.clickOnCircleItem(item)}>
+        <CircleItem text={firstChar} />
+      </TouchableOpacity>
+    )
+  }
+
+  /**
+   * When user click on circle item
+   * We move to the section
+   * @param item The item content information for finding section
+   */
+  clickOnCircleItem = item => {
+    const { onClick } = this.props
+    onClick(item)
   }
 
   /**
@@ -36,7 +50,8 @@ class Alpha extends PureComponent {
 }
 
 Alpha.propTypes = {
-  data: PropTypes.arrayOf(MSection)
+  onClick: PropTypes.func.isRequired,
+  data: PropTypes.arrayOf(MSection).isRequired
 }
 
 export default Alpha

@@ -27,9 +27,10 @@ class List extends PureComponent {
   keyExtractor = (item, index) => item + index
 
   render() {
-    const { data, renderSectionHeader = this.renderSectionHeader, renderItem = this.renderItem } = this.props
+    const { data, renderSectionHeader = this.renderSectionHeader, renderItem = this.renderItem, onRef } = this.props
     return (
       <SectionList
+        ref={onRef}
         sections={data}
         renderSectionHeader={renderSectionHeader}
         renderItem={renderItem}
@@ -43,7 +44,8 @@ class List extends PureComponent {
 List.propTypes = {
   data: PropTypes.arrayOf(MSection),
   renderSectionHeader: PropTypes.func,
-  renderItem: PropTypes.func
+  renderItem: PropTypes.func,
+  onRef: PropTypes.func.isRequired
 }
 
 export default List

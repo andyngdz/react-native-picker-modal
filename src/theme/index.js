@@ -20,6 +20,10 @@ const Theme = {
     alignItems: 'center',
     justifyContent: 'center'
   },
+  verticalContentCenterWithoutFlex: {
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
   horizontalCenter: {
     display: 'flex',
     alignItems: 'center',

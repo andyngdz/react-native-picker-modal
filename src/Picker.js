@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { View, Modal, SafeAreaView } from 'react-native'
 import { List, Alpha } from './component'
 import DataType, { BuiltInData } from './static'
+import { MSection } from './model'
 import styles from './styles'
 
 class RNPicker extends PureComponent {
@@ -39,18 +40,33 @@ class RNPicker extends PureComponent {
     this.setState({ isShowModal: false })
   }
 
+  /**
+   * When user click on alphabet item
+   * This function will be called
+   * @param {MSection} item The MSection item included title and list data
+   */
+  onClickOnAlphaBet = item => {
+    console.info(this.listComponent, item)
+  }
+
   render() {
     const { data, isShowModal } = this.state
     const { animationType, renderSectionHeader, renderItem, onSelect } = this.props
     return (
       <Modal visible={isShowModal} transparent={false} animationType={animationType}>
-        <SafeAreaView>
+        <SafeAreaView style={styles.safeAreViewContainer}>
           <View style={styles.listContainer}>
             <View style={styles.listData}>
-              <List data={data} renderSectionHeader={renderSectionHeader} renderItem={renderItem} onSelect={onSelect} />
+              <List
+                data={data}
+                renderSectionHeader={renderSectionHeader}
+                renderItem={renderItem}
+                onSelect={onSelect}
+                onRef={listComponent => (this.listComponent = listComponent)}
+              />
             </View>
             <View style={styles.listAlpha}>
-              <Alpha data={data} />
+              <Alpha data={data} onClick={this.onClickOnAlphaBet} />
             </View>
           </View>
         </SafeAreaView>

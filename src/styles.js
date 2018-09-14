@@ -10,5 +10,8 @@ export default StyleSheet.create({
   },
   listContainer: {
     ...Theme.flexRow
+  },
+  safeAreViewContainer: {
+    ...Theme.flexible
   }
 })
