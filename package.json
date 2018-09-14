@@ -1,0 +1,30 @@
+{
+  "name": "react-native-picker",
+  "version": "1.0.0",
+  "description": "The React Native Picker component package using SectionList and Alphabet",
+  "main": "index.js",
+  "scripts": {
+    "test": "yarn test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/itanhduy/react-native-picker.git"
+  },
+  "keywords": [
+    "React",
+    "React Native",
+    "React Native Picker",
+    "SelectionList",
+    "Alphabet"
+  ],
+  "author": "Andy Ng",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/itanhduy/react-native-picker/issues"
+  },
+  "homepage": "https://github.com/itanhduy/react-native-picker#readme",
+  "dependencies": {
+    "react": "^16.5.1",
+    "react-native": "^0.57.0"
+  }
+}
