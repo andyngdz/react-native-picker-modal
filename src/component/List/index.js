@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { Modal, SectionList } from 'react-native'
+import { ActivityIndicator, SectionList, View } from 'react-native'
 import PropTypes from 'prop-types'
 import Header from './Header'
 import Item from './Item'
@@ -11,6 +11,7 @@ class List extends PureComponent {
    */
   renderSectionHeader = section => {
     console.info(section)
+    return <View />
   }
 
   /**
@@ -18,6 +19,7 @@ class List extends PureComponent {
    */
   renderItem = ({ item, index, section }) => {
     console.info(item, index, section)
+    return <View />
   }
 
   /**
@@ -32,6 +34,7 @@ class List extends PureComponent {
         sections={data}
         renderSectionHeader={renderSectionHeader}
         renderItem={renderItem}
+        ListEmptyComponent={<ActivityIndicator />}
         keyExtractor={this.keyExtractor}
       />
     )

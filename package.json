@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/itanhduy/react-native-picker#readme",
   "devDependencies": {
+    "lodash": "^4.17.11",
     "react": "^16.5.1",
     "react-native": "^0.57.0"
   }

@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react'
-import { Modal } from 'react-native'
 import PropTypes from 'prop-types'
+import { Modal } from 'react-native'
 import { List } from './component'
+import DataType, { BuiltInData } from './static'
 
 class RNPicker extends PureComponent {
   constructor(props) {
@@ -13,10 +14,12 @@ class RNPicker extends PureComponent {
   }
 
   componentDidMount() {
-    const { data } = this.props
-    this.setState({
-      data
-    })
+    const { data, dataType } = this.props
+    let prepareData = data
+    if (dataType) {
+      prepareData = BuiltInData[dataType]
+    }
+    this.setState({ data: prepareData })
   }
 
   /**
@@ -37,7 +40,7 @@ class RNPicker extends PureComponent {
 
   render() {
     const { data, isShowModal } = this.state
-    const { renderSectionHeader, renderItem, onSelect, animationType } = this.props
+    const { animationType, renderSectionHeader, renderItem, onSelect } = this.props
     return (
       <Modal visible={isShowModal} transparent={false} animationType={animationType}>
         <List data={data} renderSectionHeader={renderSectionHeader} renderItem={renderItem} onSelect={onSelect} />
@@ -47,6 +50,8 @@ class RNPicker extends PureComponent {
 }
 
 RNPicker.propTypes = {
+  data: PropTypes.object,
+  dataType: PropTypes.oneOf(DataType),
   animationType: PropTypes.string,
   renderSectionHeader: PropTypes.func,
   renderItem: PropTypes.func,
@@ -54,7 +59,8 @@ RNPicker.propTypes = {
 }
 
 RNPicker.defaultProps = {
-  animationType: 'slide'
+  animationType: 'slide',
+  dataType: 'country'
 }
 
 export default RNPicker

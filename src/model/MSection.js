@@ -9,11 +9,11 @@ class MSection {
   /**
    *
    * @param {String} title The title for section header
-   * @param {MItem} item The item will be rendered inside section
+   * @param {Array<MItem>} data The item will be rendered inside section
    */
-  constructor(title, item) {
+  constructor(title, data) {
     this.title = title
-    this.item = item
+    this.data = data
   }
 }
 
