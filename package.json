@@ -26,8 +26,7 @@
   "devDependencies": {
     "lodash": "^4.17.11",
     "react": "^16.5.1",
-    "react-native": "^0.57.0",
-    "react-native-section-list-get-item-layout": "^2.2.3"
+    "react-native": "^0.57.0"
   },
   "dependencies": {}
 }
