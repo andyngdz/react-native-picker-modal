@@ -31,12 +31,10 @@ class List extends PureComponent {
    * Get itemLayout for using scrollToLocation
    * @return {SectionListScrollParams} Return the sectionListScrollParams
    */
-  getItemLayout = (data, index) => {
-    const { itemHeight } = this.props
-    return sectionListGetItemLayout({
+  getItemLayout = (data, index) => ({ itemHeight }) =>
+    sectionListGetItemLayout({
       getItemHeight: (rowData, sectionIndex, rowIndex) => (sectionIndex === 0 ? itemHeight * 2 : itemHeight)
     })
-  }
 
   render() {
     const { data, renderSectionHeader = this.renderSectionHeader, renderItem = this.renderItem, onRef } = this.props
