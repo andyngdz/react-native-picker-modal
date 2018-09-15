@@ -35,8 +35,6 @@ class List extends PureComponent {
         renderSectionHeader={renderSectionHeader}
         renderItem={renderItem}
         ListEmptyComponent={<ActivityIndicator />}
-        initialScrollIndex={50}
-        initialNumToRender={2}
         keyExtractor={this.keyExtractor}
       />
     )
