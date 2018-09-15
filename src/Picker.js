@@ -97,7 +97,7 @@ class RNPicker extends PureComponent {
      * Because we can't scroll without this function
      */
     if (!this.listRef.scrollToOffset) return
-    this.listComponent.scrollToOffset(this.createOffsetToScroll())
+    this.listRef.scrollToOffset(this.createOffsetToScroll())
   }
 
   /**
