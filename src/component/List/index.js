@@ -47,6 +47,7 @@ class List extends PureComponent {
         renderItem={renderItem}
         ListEmptyComponent={<ActivityIndicator />}
         keyExtractor={this.keyExtractor}
+        removeClippedSubviews={false}
       />
     )
   }
