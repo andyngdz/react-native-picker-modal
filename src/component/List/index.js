@@ -9,6 +9,8 @@ import styles from './styles'
 class List extends PureComponent {
   /**
    * Render header for section list
+   * @param data The section data included title
+   * @return {PureComponent} Header component
    */
   renderSectionHeader = data => {
     const { headerHeight } = this.props
@@ -22,6 +24,10 @@ class List extends PureComponent {
 
   /**
    * Render item for section list
+   * @param item The item of each row
+   * @param index The index of item
+   * @param section The section wrap the item
+   * @return {PureComponent} Item component
    */
   renderItem = ({ item, index, section }) => {
     const { itemHeight } = this.props
@@ -34,6 +40,9 @@ class List extends PureComponent {
 
   /**
    * Create key extractor for this section list
+   * @param item The item of each row
+   * @param index The index of item
+   * @return {String} The key
    */
   keyExtractor = (item, index) => item + index
 
