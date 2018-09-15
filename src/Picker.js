@@ -66,12 +66,21 @@ class RNPicker extends PureComponent {
     this.listComponent.scrollToLocation(this.createPositionToScroll(item))
   }
 
+  /**
+   * Should we render close button. Check closeable property
+   * @return {PureComponent} The close button to close this modal
+   */
+  shouldRenderCloseButton = () => {}
+
+  shouldRenderFilterBar = () => {}
+
   render() {
     const { data, isShowModal } = this.state
-    const { animationType, renderSectionHeader, renderItem, onSelect } = this.props
+    const { animationType, renderSectionHeader, renderItem, onSelect, itemHeight } = this.props
     return (
       <Modal visible={isShowModal} transparent={false} animationType={animationType}>
         <SafeAreaView style={styles.safeAreViewContainer}>
+          <View style={styles.headerActionContainer} />
           <View style={styles.listContainer}>
             <View style={styles.listData}>
               <List
@@ -80,6 +89,7 @@ class RNPicker extends PureComponent {
                 renderItem={renderItem}
                 onSelect={onSelect}
                 onRef={listComponent => (this.listComponent = listComponent)}
+                itemHeight={itemHeight}
               />
             </View>
             <View style={styles.listAlpha}>
@@ -98,12 +108,18 @@ RNPicker.propTypes = {
   animationType: PropTypes.string,
   renderSectionHeader: PropTypes.func,
   renderItem: PropTypes.func,
-  onSelect: PropTypes.func
+  onSelect: PropTypes.func,
+  closeable: PropTypes.bool,
+  filterable: PropTypes.bool,
+  itemHeight: PropTypes.number
 }
 
 RNPicker.defaultProps = {
   animationType: 'slide',
-  dataType: 'country'
+  dataType: 'country',
+  closeable: true,
+  filterable: true,
+  itemHeight: 50
 }
 
 export default RNPicker

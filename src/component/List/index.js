@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { ActivityIndicator, SectionList } from 'react-native'
+import { ActivityIndicator, SectionList, SectionListScrollParams } from 'react-native'
 import { MSection } from '../../model'
 import PropTypes from 'prop-types'
 import { Header } from '../General'
@@ -26,6 +26,15 @@ class List extends PureComponent {
    */
   keyExtractor = (item, index) => item + index
 
+  /**
+   * Get itemLayout for using scrollToLocation
+   * @return {SectionListScrollParams} Return the sectionListScrollParams
+   */
+  getItemLayout = (data, index) => {
+    const { itemHeight } = this.props
+    return { length: itemHeight, offset: itemHeight * index, index }
+  }
+
   render() {
     const { data, renderSectionHeader = this.renderSectionHeader, renderItem = this.renderItem, onRef } = this.props
     return (
@@ -35,6 +44,7 @@ class List extends PureComponent {
         renderSectionHeader={renderSectionHeader}
         renderItem={renderItem}
         ListEmptyComponent={<ActivityIndicator />}
+        getItemLayout={this.getItemLayout}
         keyExtractor={this.keyExtractor}
       />
     )
@@ -45,7 +55,8 @@ List.propTypes = {
   data: PropTypes.arrayOf(MSection),
   renderSectionHeader: PropTypes.func,
   renderItem: PropTypes.func,
-  onRef: PropTypes.func.isRequired
+  onRef: PropTypes.func.isRequired,
+  itemHeight: PropTypes.number.isRequired
 }
 
 export default List
