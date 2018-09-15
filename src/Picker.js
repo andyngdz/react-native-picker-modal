@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { View, Modal, SafeAreaView } from 'react-native'
 import { takeWhile, sumBy } from 'lodash'
 import { List, Alpha } from './component'
+import { BClose } from './component/Button'
 import DataType, { BuiltInData, NumToRenderType } from './static'
 import { MSection } from './model'
 import { Metrics } from './theme'
@@ -163,9 +164,12 @@ class RNPicker extends PureComponent {
 
   /**
    * Should we render close button. Check closeable property
-   * @return {PureComponent} The close button to close this modal
+   * @return {BClose} The close button to close this modal
    */
-  shouldRenderCloseButton = () => {}
+  shouldRenderCloseButton = () => {
+    const { closeable } = this.props
+    return closeable && <BClose onPress={this.closeModal} />
+  }
 
   /**
    * Should we render filter bar. Check filterable property
@@ -178,6 +182,10 @@ class RNPicker extends PureComponent {
    * @param {SectionListProps} listInstance The SectionListProps
    */
   onRef = listInstance => {
+    /**
+     * Check if listInstance is null then return
+     */
+    if (!listInstance) return
     /**
      * The ref of SectionList component
      */
@@ -198,7 +206,10 @@ class RNPicker extends PureComponent {
     return (
       <Modal visible={isShowModal} transparent={false} animationType={animationType}>
         <SafeAreaView style={styles.safeAreViewContainer}>
-          <View style={styles.headerActionContainer} />
+          <View style={styles.headerActionContainer}>
+            {this.shouldRenderCloseButton()}
+            {this.shouldRenderFilterBar()}
+          </View>
           <View style={styles.listContainer}>
             <View style={styles.listData}>
               <List
@@ -239,7 +250,7 @@ RNPicker.propTypes = {
 RNPicker.defaultProps = {
   animationType: 'slide',
   dataType: 'country',
-  numToRender: 'full',
+  numToRender: 15,
   closeable: true,
   filterable: true,
   headerHeight: 50,

@@ -9,9 +9,19 @@ export default StyleSheet.create({
     width: Metrics.takeWidth(0.15)
   },
   listContainer: {
-    ...Theme.flexRow
+    ...Theme.flexRow,
+    ...Theme.flexible
   },
   safeAreViewContainer: {
-    ...Theme.flexible
+    ...Theme.flexible,
+    ...Theme.flexDirectionColumn
+  },
+  headerActionContainer: {
+    ...Theme.horizontalCenter,
+    ...Theme.flexRow,
+    paddingTop: Metrics.basePadding * 3,
+    paddingBottom: Metrics.basePadding * 3,
+    paddingLeft: Metrics.basePadding * 2,
+    paddingRight: Metrics.basePadding * 2
   }
 })

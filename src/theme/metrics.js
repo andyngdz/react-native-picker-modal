@@ -19,6 +19,15 @@ const Metrics = {
    */
   takeWidth: ratio => {
     return Metrics.screenWidth * ratio
+  },
+  /**
+   * Take screen height depends on ratio
+   * Ex: screenHeight: 500 with ratio 0.5 => 250
+   *       screenHeight: 500 with ratio 0.7 => 350
+   * @param {Number} ratio The part of width needs to get {0-1}
+   */
+  takeHeight: ratio => {
+    return Metrics.screenHeight * ratio
   }
 }
 

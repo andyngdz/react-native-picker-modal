@@ -1,10 +1,9 @@
 import React, { PureComponent } from 'react'
-import { FlatList, SectionList, TouchableOpacity } from 'react-native'
+import { FlatList, TouchableOpacity } from 'react-native'
 import PropTypes from 'prop-types'
 import { first } from 'lodash'
 import { MSection } from '../..//model'
 import CircleItem from './CircleItem'
-import { Header } from '../General'
 import styles from './styles'
 
 class Alpha extends PureComponent {
@@ -43,7 +42,7 @@ class Alpha extends PureComponent {
         data={data}
         renderItem={this.renderItem}
         keyExtractor={this.keyExtractor}
-        contentContainerStyle={styles.alphaContainerStyle}
+        contentContainerStyle={styles.containerStyle}
       />
     )
   }

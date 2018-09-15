@@ -6,7 +6,7 @@ export default StyleSheet.create({
     width: Metrics.takeWidth(0.05),
     height: Metrics.takeWidth(0.05),
     borderRadius: Metrics.takeWidth(0.025),
-    margin: Metrics.takeWidth(0.005),
+    margin: Metrics.baseMargin,
     backgroundColor: Colors.info,
     ...Theme.verticalContentCenterWithoutFlex
   },
