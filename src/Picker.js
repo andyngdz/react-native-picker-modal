@@ -50,12 +50,11 @@ class RNPicker extends PureComponent {
   }
 
   /**
-   * Create params to use with scrollToLocation function from ListComponent
-   * @param {MSection} item The MSection item included title and list data
-   * @return {{animated?: ?boolean, offset: number}} The params for section list to scroll
+   * Return offset depends on the distance of list MSection
+   * @param {Array<MSection>} distanceArrayMSection The list MSection needs to calculate offset
+   * @return {Number} The offset value
    */
-  createOffsetToScroll = item => {
-    const { data } = this.state
+  calculateOffset = distanceArrayMSection => {
     const { headerHeight, itemHeight } = this.props
     /**
      * Loop through the list until met the section item
@@ -65,11 +64,24 @@ class RNPicker extends PureComponent {
      * When (6*50) is the offset for Headers
      * When (6*10*50) is the offset for list Items
      */
+    return (
+      distanceArrayMSection.length * headerHeight +
+      sumBy(distanceArrayMSection, sectionData => sectionData.data.length) * itemHeight
+    )
+  }
+
+  /**
+   * Create params to use with scrollToLocation function from ListComponent
+   * @param {MSection} item The MSection item included title and list data
+   * @return {{animated?: ?boolean, offset: number}} The params for section list to scroll
+   */
+  createOffsetToScroll = item => {
+    const { data } = this.state
     const distanceToItem = takeWhile(data, sectionData => {
       return !Object.is(sectionData.title, item.title)
     })
     return {
-      offset: distanceToItem.length * headerHeight + sumBy(distanceToItem, sectionData.data.length) * itemHeight
+      offset: this.calculateOffset(distanceToItem)
     }
   }
 
