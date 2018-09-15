@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { View, Modal, SafeAreaView } from 'react-native'
+import { View, Modal, SafeAreaView, SectionListScrollParams } from 'react-native'
+import { findIndex } from 'lodash'
 import { List, Alpha } from './component'
 import DataType, { BuiltInData } from './static'
 import { MSection } from './model'
@@ -41,12 +42,28 @@ class RNPicker extends PureComponent {
   }
 
   /**
+   * Create params to use with scrollToLocation function from ListComponent
+   * @param {MSection} item The MSection item included title and list data
+   * @return {SectionListScrollParams} The params for section list scroll
+   */
+  createPositionToScroll = item => {
+    const { data } = this.state
+    const sectionIndex = findIndex(data, { title: item.title })
+    return {
+      animated: true,
+      sectionIndex,
+      itemIndex: 0,
+      viewPosition: 0
+    }
+  }
+
+  /**
    * When user click on alphabet item
    * This function will be called
    * @param {MSection} item The MSection item included title and list data
    */
   onClickOnAlphaBet = item => {
-    console.info(this.listComponent, item)
+    this.listComponent.scrollToLocation(this.createPositionToScroll(item))
   }
 
   render() {
