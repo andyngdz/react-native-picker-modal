@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { View, Modal, SafeAreaView, SectionListScrollParams } from 'react-native'
+import { View, Modal, SafeAreaView } from 'react-native'
 import { takeWhile, sumBy } from 'lodash'
 import { List, Alpha } from './component'
-import DataType, { BuiltInData } from './static'
+import DataType, { BuiltInData, NumToRenderType } from './static'
 import { MSection } from './model'
 import { Metrics } from './theme'
 import styles from './styles'
@@ -185,8 +185,16 @@ class RNPicker extends PureComponent {
   }
 
   render() {
-    const { data, totalContentLength, isShowModal } = this.state
-    const { animationType, renderSectionHeader, renderItem, onSelect, headerHeight, itemHeight } = this.props
+    const { data, isShowModal } = this.state
+    const {
+      animationType,
+      renderSectionHeader,
+      renderItem,
+      onSelect,
+      headerHeight,
+      itemHeight,
+      numToRender
+    } = this.props
     return (
       <Modal visible={isShowModal} transparent={false} animationType={animationType}>
         <SafeAreaView style={styles.safeAreViewContainer}>
@@ -201,6 +209,7 @@ class RNPicker extends PureComponent {
                 onRef={this.onRef}
                 headerHeight={headerHeight}
                 itemHeight={itemHeight}
+                numToRender={numToRender}
               />
             </View>
             <View style={styles.listAlpha}>
@@ -216,6 +225,7 @@ class RNPicker extends PureComponent {
 RNPicker.propTypes = {
   data: PropTypes.object,
   dataType: PropTypes.oneOf(DataType),
+  numToRender: PropTypes.oneOf(NumToRenderType),
   animationType: PropTypes.string,
   renderSectionHeader: PropTypes.func,
   renderItem: PropTypes.func,
@@ -229,6 +239,7 @@ RNPicker.propTypes = {
 RNPicker.defaultProps = {
   animationType: 'slide',
   dataType: 'country',
+  numToRender: 'full',
   closeable: true,
   filterable: true,
   headerHeight: 50,
