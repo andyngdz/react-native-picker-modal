@@ -20,6 +20,7 @@ class RNPicker extends PureComponent {
     super(props)
     this.state = {
       data: [],
+      initialNumToRender: 2,
       isShowModal: false
     }
   }
@@ -71,16 +72,26 @@ class RNPicker extends PureComponent {
   }
 
   /**
+   * Return how many items should render immediately to help scroll to be smoother
+   * @param {Array<MSection>} distanceArrayMSection The list MSection needs to calculate offset
+   * @return {Number} The offset value
+   */
+  calculateInitialNumToRender = distanceArrayMSection => {
+    return distanceArrayMSection.length
+  }
+
+  /**
    * Create params to use with scrollToLocation function from ListComponent
    * @param {MSection} item The MSection item included title and list data
-   * @return {{animated?: ?boolean, offset: number}} The params for section list to scroll
+   * @return {{initialNumToRender: number, animated?: ?boolean, offset: number}} The params for section list to scroll
    */
-  createOffsetToScroll = item => {
+  createOptionsToScroll = item => {
     const { data } = this.state
     const distanceToItem = takeWhile(data, sectionData => {
       return !Object.is(sectionData.title, item.title)
     })
     return {
+      initialNumToRender: this.calculateInitialNumToRender(distanceToItem),
       offset: this.calculateOffset(distanceToItem)
     }
   }
@@ -97,7 +108,10 @@ class RNPicker extends PureComponent {
      * Because we can't scroll without this function
      */
     if (!this.listRef.scrollToOffset) return
-    this.listRef.scrollToOffset(this.createOffsetToScroll(item))
+    const { initialNumToRender, offset } = this.createOptionsToScroll(item)
+    this.setState({ initialNumToRender }, () => {
+      this.listRef.scrollToOffset({ offset })
+    })
   }
 
   /**
@@ -124,7 +138,7 @@ class RNPicker extends PureComponent {
   }
 
   render() {
-    const { data, isShowModal } = this.state
+    const { data, initialNumToRender, isShowModal } = this.state
     const { animationType, renderSectionHeader, renderItem, onSelect, headerHeight, itemHeight } = this.props
     return (
       <Modal visible={isShowModal} transparent={false} animationType={animationType}>
@@ -140,6 +154,7 @@ class RNPicker extends PureComponent {
                 onRef={this.onRef}
                 headerHeight={headerHeight}
                 itemHeight={itemHeight}
+                initialNumToRender={initialNumToRender}
               />
             </View>
             <View style={styles.listAlpha}>

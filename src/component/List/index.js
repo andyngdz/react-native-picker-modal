@@ -38,7 +38,13 @@ class List extends PureComponent {
   keyExtractor = (item, index) => item + index
 
   render() {
-    const { data, renderSectionHeader = this.renderSectionHeader, renderItem = this.renderItem, onRef } = this.props
+    const {
+      data,
+      initialNumToRender,
+      renderSectionHeader = this.renderSectionHeader,
+      renderItem = this.renderItem,
+      onRef
+    } = this.props
     return (
       <SectionList
         ref={onRef}
@@ -47,7 +53,8 @@ class List extends PureComponent {
         renderItem={renderItem}
         ListEmptyComponent={<ActivityIndicator />}
         keyExtractor={this.keyExtractor}
-        removeClippedSubviews={false}
+        initialNumToRender={initialNumToRender}
+        removeClippedSubviews={true}
       />
     )
   }
@@ -58,8 +65,13 @@ List.propTypes = {
   renderSectionHeader: PropTypes.func,
   renderItem: PropTypes.func,
   onRef: PropTypes.func.isRequired,
+  initialNumToRender: PropTypes.number.isRequired,
   itemHeight: PropTypes.number.isRequired,
   headerHeight: PropTypes.number.isRequired
+}
+
+List.defaultProps = {
+  initialNumToRender: 2
 }
 
 export default List
