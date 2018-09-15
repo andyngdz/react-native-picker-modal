@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react'
 import { ActivityIndicator, SectionList, SectionListScrollParams } from 'react-native'
+import sectionListGetItemLayout from 'react-native-section-list-get-item-layout'
 import { MSection } from '../../model'
 import PropTypes from 'prop-types'
 import { Header } from '../General'
@@ -32,7 +33,9 @@ class List extends PureComponent {
    */
   getItemLayout = (data, index) => {
     const { itemHeight } = this.props
-    return { length: itemHeight, offset: itemHeight * index, index }
+    return sectionListGetItemLayout({
+      getItemHeight: (rowData, sectionIndex, rowIndex) => (sectionIndex === 0 ? itemHeight * 2 : itemHeight)
+    })
   }
 
   render() {
