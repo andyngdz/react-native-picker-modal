@@ -33,18 +33,27 @@ class List extends PureComponent {
   }
 
   /**
+   * Get itemLayout to support scrollable
+   * @param data The current data of list
+   * @param index The current index is running
+   * @return {{length: Number, offset: Number, index: Number}} Return the layout options
+   */
+  getItemLayout = (data, index) => {
+    const { itemHeight } = this.props
+    return {
+      length: itemHeight,
+      offset: itemHeight * index,
+      index
+    }
+  }
+
+  /**
    * Create key extractor for this section list
    */
   keyExtractor = (item, index) => item + index
 
   render() {
-    const {
-      data,
-      initialNumToRender,
-      renderSectionHeader = this.renderSectionHeader,
-      renderItem = this.renderItem,
-      onRef
-    } = this.props
+    const { data, renderSectionHeader = this.renderSectionHeader, renderItem = this.renderItem, onRef } = this.props
     return (
       <SectionList
         ref={onRef}
@@ -53,8 +62,7 @@ class List extends PureComponent {
         renderItem={renderItem}
         ListEmptyComponent={<ActivityIndicator />}
         keyExtractor={this.keyExtractor}
-        initialNumToRender={initialNumToRender}
-        removeClippedSubviews={true}
+        getItemLayout={this.getItemLayout}
       />
     )
   }
@@ -65,13 +73,8 @@ List.propTypes = {
   renderSectionHeader: PropTypes.func,
   renderItem: PropTypes.func,
   onRef: PropTypes.func.isRequired,
-  initialNumToRender: PropTypes.number.isRequired,
   itemHeight: PropTypes.number.isRequired,
   headerHeight: PropTypes.number.isRequired
-}
-
-List.defaultProps = {
-  initialNumToRender: 2
 }
 
 export default List
