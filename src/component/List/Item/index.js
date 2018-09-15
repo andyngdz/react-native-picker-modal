@@ -15,6 +15,7 @@ class Item extends PureComponent {
 
   render() {
     const { item } = this.props
+    console.info(item)
     const { image, title, rightItem } = item
     return (
       <View style={styles.itemContainer}>

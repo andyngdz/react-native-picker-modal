@@ -5,6 +5,7 @@ import { takeWhile, sumBy } from 'lodash'
 import { List, Alpha } from './component'
 import DataType, { BuiltInData } from './static'
 import { MSection } from './model'
+import { Metrics } from './theme'
 import styles from './styles'
 
 /**
@@ -19,7 +20,21 @@ class RNPicker extends PureComponent {
   constructor(props) {
     super(props)
     this.state = {
+      /**
+       * The list data for SectionList
+       */
       data: [],
+      /**
+       * The total content lenght
+       * For example we have itemHeight is 50 and headerHeight is 50
+       * With data is 10 sections, each section has 10 items
+       * So the totalContentLength will be: 10*50 + (10*10) * 50 = 5500
+       */
+      totalContentLength: 0,
+      /**
+       * Toggle this value to show the modal
+       * Check method openModal() and closeModal()
+       */
       isShowModal: false
     }
   }
@@ -30,7 +45,7 @@ class RNPicker extends PureComponent {
     if (dataType) {
       prepareData = BuiltInData[dataType]
     }
-    this.setState({ data: prepareData })
+    this.setState({ data: prepareData, totalContentLength: this.createTotalContentLength(prepareData) })
   }
 
   /**
@@ -54,7 +69,7 @@ class RNPicker extends PureComponent {
    * @param {Array<MSection>} distanceArrayMSection The list MSection needs to calculate offset
    * @return {Number} The offset value
    */
-  calculateOffset = distanceArrayMSection => {
+  calculateOffset = listMSection => {
     const { headerHeight, itemHeight } = this.props
     /**
      * Loop through the list until met the section item
@@ -64,25 +79,60 @@ class RNPicker extends PureComponent {
      * When (6*50) is the offset for Headers
      * When (6*10*50) is the offset for list Items
      */
-    return (
-      distanceArrayMSection.length * headerHeight +
-      sumBy(distanceArrayMSection, sectionData => sectionData.data.length) * itemHeight
-    )
+    return listMSection.length * headerHeight + sumBy(listMSection, mSection => mSection.data.length) * itemHeight
   }
 
   /**
-   * Create params to use with scrollToLocation function from ListComponent
+   * Create offset number by calculating distance between this item with the original list data
    * @param {MSection} item The MSection item included title and list data
-   * @return {{animated?: ?boolean, offset: number}} The params for section list to scroll
+   * @return {Number} The new offset
    */
   createOffsetToScroll = item => {
     const { data } = this.state
-    const distanceToItem = takeWhile(data, sectionData => {
-      return !Object.is(sectionData.title, item.title)
+    const listMSection = takeWhile(data, mSection => {
+      return !Object.is(mSection.title, item.title)
     })
-    return {
-      offset: this.calculateOffset(distanceToItem)
+    return this.calculateOffset(listMSection)
+  }
+
+  /**
+   * Creatre safe offset to scroll
+   * @param {Number} totalCellLength The total length of items in SectionList
+   * @param {Number} newOffset The new offset was calculated by #createOffsetToScroll
+   *  @return {{animated?: ?boolean, offset: number}} The params for section list to scroll
+   */
+  createSafeOffset = newOffset => {
+    const { totalContentLength } = this.state
+    const { screenHeight } = Metrics
+    const safeDistance = totalContentLength - newOffset
+    /**
+     * Calculate the gap between screenHeight and safeDistance
+     * Then minus newOffset with this value
+     */
+    const decreaseOffset = screenHeight - safeDistance
+    /**
+     * Only minus newOffset when safeDistance is smaller than screenHeight
+     * It means we have a big gap because screenHeight is greater than safeDistance
+     * We don't have enough items to fill that's gap
+     */
+    if (safeDistance < screenHeight) {
+      newOffset -= decreaseOffset
     }
+    return {
+      animated: true,
+      offset: newOffset
+    }
+  }
+
+  /**
+   * Create total content length depends on the list data
+   * @return {Number} The total length of content it could be a large number kind of 10000 or something like that if the list items more than 200 values
+   */
+  createTotalContentLength = data => {
+    const { headerHeight, itemHeight } = this.props
+    const headerLength = data.length * headerHeight
+    const itemLength = sumBy(data, mSection => mSection.data.length * itemHeight)
+    return headerLength + itemLength
   }
 
   /**
@@ -97,7 +147,18 @@ class RNPicker extends PureComponent {
      * Because we can't scroll without this function
      */
     if (!this.listRef.scrollToOffset) return
-    this.listRef.scrollToOffset(this.createOffsetToScroll(item))
+    /**
+     * Create new offset depends on item distance with the rest of items in list
+     */
+    const newOffset = this.createOffsetToScroll(item)
+    /**
+     * Create safe offset to scroll
+     */
+    const safeOffset = this.createSafeOffset(newOffset)
+    /**
+     * Start scrolling to the offset position
+     */
+    this.listRef.scrollToOffset(safeOffset)
   }
 
   /**
@@ -124,7 +185,7 @@ class RNPicker extends PureComponent {
   }
 
   render() {
-    const { data, isShowModal } = this.state
+    const { data, totalContentLength, isShowModal } = this.state
     const { animationType, renderSectionHeader, renderItem, onSelect, headerHeight, itemHeight } = this.props
     return (
       <Modal visible={isShowModal} transparent={false} animationType={animationType}>
