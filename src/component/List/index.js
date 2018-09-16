@@ -73,6 +73,7 @@ class List extends PureComponent {
         renderSectionHeader={renderSectionHeader}
         renderItem={renderItem}
         ListEmptyComponent={Loader}
+        contentContainerStyle={styles.containerStyle}
         keyExtractor={this.keyExtractor}
         initialNumToRender={this.initialNumToRender()}
         disableVirtualization={true}
