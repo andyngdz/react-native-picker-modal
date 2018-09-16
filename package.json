@@ -1,14 +1,14 @@
 {
-  "name": "react-native-picker",
+  "name": "react-native-picker-modal",
   "version": "1.0.0",
-  "description": "The React Native Picker component package using SectionList and Alphabet",
+  "description": "The React Native Picker Modal component package using SectionList and Alphabet",
   "main": "index.js",
   "scripts": {
     "test": "yarn test"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/itanhduy/react-native-picker.git"
+    "url": "git+https://github.com/itanhduy/react-native-picker-modal.git"
   },
   "keywords": [
     "React",
@@ -20,9 +20,9 @@
   "author": "Andy Ng",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/itanhduy/react-native-picker/issues"
+    "url": "https://github.com/itanhduy/react-native-picker-modal/issues"
   },
-  "homepage": "https://github.com/itanhduy/react-native-picker#readme",
+  "homepage": "https://github.com/itanhduy/react-native-picker-modal#readme",
   "devDependencies": {
     "lodash": "^4.17.11",
     "react": "^16.5.1",
