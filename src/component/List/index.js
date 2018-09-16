@@ -84,7 +84,7 @@ class List extends PureComponent {
 }
 
 List.propTypes = {
-  data: PropTypes.arrayOf(MSection),
+  data: PropTypes.arrayOf(PropTypes.instanceOf(MSection)),
   renderSectionHeader: PropTypes.func,
   renderItem: PropTypes.func,
   onRef: PropTypes.func.isRequired,
