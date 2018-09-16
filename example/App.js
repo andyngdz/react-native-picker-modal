@@ -1,8 +1,18 @@
 import React from 'react'
 import { SafeAreaView } from 'react-native'
 import { Font, AppLoading } from 'expo'
-import { Screen, View, Heading } from '@shoutem/ui'
+import { Screen, View, Heading, Caption } from '@shoutem/ui'
+import { CountryPicker } from './component'
+import styles from './styles'
 
+/**
+ * RNPickerModal
+ * @description `The React Native Picker component package using SectionList and Alphabet`
+ * @website https://github.com/itanhduy/react-native-picker
+ * @by `Andy Ng`
+ * @email `itc.anhduy@gmail.com`
+ * @when `2018-09-16 16:31:08`
+ */
 export default class App extends React.Component {
   constructor(props) {
     super(props)
@@ -36,13 +46,22 @@ export default class App extends React.Component {
     }
 
     return (
-      <Screen styleName="paper">
-        <SafeAreaView>
-          <View styleName="vertical v-center h-center lg-mutter">
-            <Heading>RNPickerModal</Heading>
+      <SafeAreaView style={styles.safeAreaContainer}>
+        <Screen styleName="paper">
+          <View styleName="flexible vertical v-center h-center lg-gutter">
+            <View>
+              <Heading>RNPickerModal</Heading>
+              <Caption>
+                In order to test this plugin. Please turn off dev, optimize your code, run on real device before to see
+                real performance.
+              </Caption>
+            </View>
+            <View styleName="lg-gutter-top">
+              <CountryPicker />
+            </View>
           </View>
-        </SafeAreaView>
-      </Screen>
+        </Screen>
+      </SafeAreaView>
     )
   }
 }
