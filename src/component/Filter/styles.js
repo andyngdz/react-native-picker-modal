@@ -7,7 +7,6 @@ export default StyleSheet.create({
     ...Theme.flexible
   },
   input: {
-    paddingTop: Metrics.basePadding * 2,
     paddingBottom: Metrics.basePadding * 2,
     borderBottomWidth: Metrics.baseSize / 5,
     borderBottomColor: Colors.border
