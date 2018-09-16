@@ -1,12 +1,11 @@
-import React, { PureComponent, Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { View, Modal, SafeAreaView, AppState, Image } from 'react-native'
+import { View, Modal, SafeAreaView, AppState } from 'react-native'
 import { takeWhile, sumBy, cloneDeep, forEach, filter } from 'lodash'
 import { BClose } from './component/Button'
 import { List, Alpha } from './component'
 import { Metrics } from './theme'
 import { MSection } from './model'
-import { ImageComponent } from './enhance'
 import DataType, { BuiltInData, Error } from './static'
 import FilterBar from './component/Filter'
 import styles from './styles'
@@ -53,18 +52,11 @@ class RNPicker extends PureComponent {
    * @returns {AppState} New state will be set for this component
    */
   initializeData = () => {
-    const { data, dataType, imageComponent, imageComponentProps } = this.props
+    const { data, dataType } = this.props
     let prepareData = data
     if (dataType) {
       prepareData = BuiltInData[dataType]
     }
-
-    /**
-     * Enhance components
-     */
-    ImageComponent.c = imageComponent
-    ImageComponent.p = imageComponentProps
-
     this.setState({
       data: prepareData,
       cloneData: prepareData,
@@ -354,9 +346,7 @@ RNPicker.propTypes = {
   closeable: PropTypes.bool,
   filterable: PropTypes.bool,
   headerHeight: PropTypes.number.isRequired,
-  itemHeight: PropTypes.number.isRequired,
-  imageComponent: PropTypes.oneOfType([PropTypes.instanceOf(Component), PropTypes.instanceOf(PureComponent)]),
-  imageComponentProps: PropTypes.object
+  itemHeight: PropTypes.number.isRequired
 }
 
 RNPicker.defaultProps = {
@@ -367,9 +357,7 @@ RNPicker.defaultProps = {
   filterable: true,
   headerHeight: 50,
   itemHeight: 50,
-  onSelect: () => {},
-  imageComponent: Image,
-  imageComponentProps: {}
+  onSelect: () => {}
 }
 
 export default RNPicker

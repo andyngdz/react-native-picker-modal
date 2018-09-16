@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { View, Text } from 'react-native'
-import { ImageComponent } from '../../../enhance'
+import { View, Image, Text } from 'react-native'
 import styles from './styles'
 
 class Item extends PureComponent {
@@ -20,7 +19,7 @@ class Item extends PureComponent {
     return (
       <View style={styles.itemContainer}>
         <View style={styles.itemInfo}>
-          <ImageComponent.c style={styles.smallImage} source={{ uri: image }} {...ImageComponent.p} />
+          <Image style={styles.smallImage} source={{ uri: image }} />
           <View style={styles.itemInfoText}>
             <Text>{title}</Text>
             {this.renderDescription()}
