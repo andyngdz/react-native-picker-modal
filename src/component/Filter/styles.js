@@ -1,12 +1,15 @@
 import { StyleSheet } from 'react-native'
-import Theme, { Metrics } from '../../theme'
+import Theme, { Metrics, Colors } from '../../theme'
 
 export default StyleSheet.create({
   container: {
-    marginLeft: Metrics.baseMargin,
+    marginLeft: Metrics.baseMargin * 3,
     ...Theme.flexible
   },
   input: {
-    padding: Metrics.basePadding * 3
+    paddingTop: Metrics.basePadding * 2,
+    paddingBottom: Metrics.basePadding * 2,
+    borderBottomWidth: Metrics.baseSize / 5,
+    borderBottomColor: Colors.border
   }
 })
