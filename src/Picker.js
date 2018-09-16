@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { View, Modal, SafeAreaView } from 'react-native'
+import { View, Modal, SafeAreaView, AppState } from 'react-native'
 import { takeWhile, sumBy, cloneDeep, forEach, filter } from 'lodash'
 import { BClose } from './component/Button'
 import { List, Alpha } from './component'
@@ -46,7 +46,12 @@ class RNPicker extends PureComponent {
     }
   }
 
-  componentDidMount() {
+  /**
+   * Initalize data for this plugin
+   * Depends on the data ourside or builtInData
+   * @returns {AppState} New state will be set for this component
+   */
+  initializeData = () => {
     const { data, dataType } = this.props
     let prepareData = data
     if (dataType) {
@@ -63,16 +68,16 @@ class RNPicker extends PureComponent {
    * Call this function to open modal
    * @return {Void} The modal will be opened
    */
-  openModal = () => {
-    this.setState({ isShowModal: true })
+  openModal = (cb = () => {}) => {
+    this.setState({ isShowModal: true }, cb)
   }
 
   /**
    * Call this function to close modal
    * @return {Void} The modal will be closed
    */
-  closeModal = () => {
-    this.setState({ isShowModal: false })
+  closeModal = (cb = () => {}) => {
+    this.setState({ isShowModal: false }, cb)
   }
 
   /**
@@ -203,6 +208,7 @@ class RNPicker extends PureComponent {
    * @param value The new text
    */
   filterBarInputChangeText = value => {
+    console.info(value)
     /**
      * @param {Array<MSection>} createCloneData Array of MSection
      * We need to clone this data for using with filter
@@ -262,19 +268,23 @@ class RNPicker extends PureComponent {
     this.listRef = listInstance._wrapperListRef._listRef
   }
 
+  /**
+   * When user select on the item
+   * @param item The item of each row
+   * @param index The index of item
+   * @param section The section wrap the item
+   * @return {Void} The modal will be closed and the callback onSelect will be called as well with these params as below
+   */
+  onSelectItem = (item, index, section) => {
+    const { onSelect } = this.props
+    this.closeModal(() => onSelect(item, index, section))
+  }
+
   render() {
-    const { data, totalContentLength, isShowModal } = this.state
-    const {
-      animationType,
-      renderSectionHeader,
-      renderItem,
-      onSelect,
-      headerHeight,
-      itemHeight,
-      numToRender
-    } = this.props
+    const { data, isShowModal } = this.state
+    const { animationType, renderSectionHeader, renderItem, headerHeight, itemHeight, numToRender } = this.props
     return (
-      <Modal visible={isShowModal} transparent={false} animationType={animationType}>
+      <Modal visible={isShowModal} transparent={false} animationType={animationType} onShow={this.initializeData}>
         <SafeAreaView style={styles.safeAreViewContainer}>
           <View style={styles.headerActionContainer}>
             {this.shouldRenderCloseButton()}
@@ -286,7 +296,7 @@ class RNPicker extends PureComponent {
                 data={data}
                 renderSectionHeader={renderSectionHeader}
                 renderItem={renderItem}
-                onSelect={onSelect}
+                onSelect={this.onSelectItem}
                 onRef={this.onRef}
                 headerHeight={headerHeight}
                 itemHeight={itemHeight}
@@ -324,7 +334,8 @@ RNPicker.defaultProps = {
   closeable: true,
   filterable: true,
   headerHeight: 50,
-  itemHeight: 50
+  itemHeight: 50,
+  onSelect: () => {}
 }
 
 export default RNPicker
