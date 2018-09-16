@@ -68,10 +68,17 @@ class RNPicker extends PureComponent {
    * Run callback is it a Function
    * Otherwise return
    * @param {Function} cb The callback we need to execute
-   * @return {Void|String} Return callBack with executing or warn message
+   * @return {Void|Console} Return callBack with executing or warn message
    */
   executeCallBack = cb => {
-    return Object.is(typeof cb, typeof Function) ? cb() : console.warn(Error.callBackIsNotAFunction)
+    /**
+     * Check if `cb` is undefined then return
+     */
+    if (!cb) return
+    /**
+     * Check if `cb` is a function then run it. Otherwise return error message
+     */
+    Object.is(typeof cb, typeof Function) ? cb() : console.warn(Error.callBackIsNotAFunction)
   }
 
   /**
