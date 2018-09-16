@@ -1,12 +1,18 @@
 import React, { PureComponent } from 'react'
 import { View, Button, Text } from '@shoutem/ui'
+import RNPicker from 'react-native-picker-modal'
 
 class CountryPicker extends PureComponent {
+  openModal = () => {
+    this.rnPicker.openModal()
+  }
+
   render() {
     return (
       <View styleName="lg-gutter">
-        <Button styleName="secondary">
-          <Text>Country Picker</Text>
+        <Button styleName="secondary" onPress={this.openModal}>
+          <Text>Open Country Picker</Text>
+          <RNPicker ref={rnPicker => (this.rnPicker = rnPicker)} />
         </Button>
       </View>
     )

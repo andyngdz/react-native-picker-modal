@@ -50,7 +50,7 @@ class Alpha extends PureComponent {
 
 Alpha.propTypes = {
   onClick: PropTypes.func.isRequired,
-  data: PropTypes.arrayOf(MSection).isRequired
+  data: PropTypes.arrayOf(PropTypes.instanceOf(MSection)).isRequired
 }
 
 export default Alpha
