@@ -6,7 +6,7 @@ import { BClose } from './component/Button'
 import { List, Alpha } from './component'
 import { Metrics } from './theme'
 import { MSection } from './model'
-import DataType, { BuiltInData } from './static'
+import DataType, { BuiltInData, Error } from './static'
 import FilterBar from './component/Filter'
 import styles from './styles'
 
@@ -65,19 +65,35 @@ class RNPicker extends PureComponent {
   }
 
   /**
+   * Run callback is it a Function
+   * Otherwise return
+   * @param {Function} cb The callback we need to execute
+   * @return {Void|String} Return callBack with executing or warn message
+   */
+  executeCallBack = cb => {
+    return Object.is(typeof cb, typeof Function) ? cb() : console.warn(Error.callBackIsNotAFunction)
+  }
+
+  /**
    * Call this function to open modal
+   * @param {Function} cb The callback function after setState
    * @return {Void} The modal will be opened
    */
-  openModal = (cb = () => {}) => {
-    this.setState({ isShowModal: true }, cb)
+  openModal = cb => {
+    this.setState({ isShowModal: true }, () => {
+      this.executeCallBack(cb)
+    })
   }
 
   /**
    * Call this function to close modal
+   * @param {Function} cb The callback function after setState
    * @return {Void} The modal will be closed
    */
-  closeModal = (cb = () => {}) => {
-    this.setState({ isShowModal: false }, cb)
+  closeModal = cb => {
+    this.setState({ isShowModal: false }, () => {
+      this.executeCallBack(cb)
+    })
   }
 
   /**
@@ -208,7 +224,6 @@ class RNPicker extends PureComponent {
    * @param value The new text
    */
   filterBarInputChangeText = value => {
-    console.info(value)
     /**
      * @param {Array<MSection>} createCloneData Array of MSection
      * We need to clone this data for using with filter

@@ -1,4 +1,5 @@
 import SCountry from './SCountry'
+import Error from './Error'
 
 const DataType = ['country']
 
@@ -7,4 +8,4 @@ const BuiltInData = {
 }
 
 export default DataType
-export { BuiltInData, SCountry }
+export { BuiltInData, SCountry, Error }
