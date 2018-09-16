@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types'
 import SCountry from './SCountry'
 
 const DataType = ['country']

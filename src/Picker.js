@@ -1,12 +1,12 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { View, Modal, SafeAreaView } from 'react-native'
-import { takeWhile, sumBy } from 'lodash'
+import { takeWhile, sumBy, cloneDeep, forEach, filter } from 'lodash'
 import { BClose } from './component/Button'
 import { List, Alpha } from './component'
 import { Metrics } from './theme'
 import { MSection } from './model'
-import DataType, { BuiltInData, NumToRenderType } from './static'
+import DataType, { BuiltInData } from './static'
 import FilterBar from './component/Filter'
 import styles from './styles'
 
@@ -26,6 +26,11 @@ class RNPicker extends PureComponent {
        * The list data for SectionList
        */
       data: [],
+      /**
+       * This is clone data from original `data`
+       * Use for filter data when we don't want to disturb original `data`
+       */
+      cloneData: [],
       /**
        * The total content lenght
        * For example we have itemHeight is 50 and headerHeight is 50
@@ -47,7 +52,11 @@ class RNPicker extends PureComponent {
     if (dataType) {
       prepareData = BuiltInData[dataType]
     }
-    this.setState({ data: prepareData, totalContentLength: this.createTotalContentLength(prepareData) })
+    this.setState({
+      data: prepareData,
+      cloneData: prepareData,
+      totalContentLength: this.createTotalContentLength(prepareData)
+    })
   }
 
   /**
@@ -127,6 +136,22 @@ class RNPicker extends PureComponent {
   }
 
   /**
+   * Check if we should trigger scroll function or not
+   * In case offset is smaller than screenHeight then return
+   * We don't need to scroll
+   * Because in this case user already inside the viewport
+   * @description The offset param was extracted from `safeOffsetParams`({animated: Boolean, offset: Number})
+   * @param {Number} offset The new offset was prepared for scrolling
+   * @return {Boolean} The state for telling ListComponent should scroll or not.
+   * True can scroll
+   * False don't need to scroll
+   */
+  shouldWeScroll = ({ offset }) => {
+    const { screenHeight } = Metrics
+    return offset > screenHeight
+  }
+
+  /**
    * Create total content length depends on the list data
    * @return {Number} The total length of content it could be a large number kind of 10000 or something like that if the list items more than 200 values
    */
@@ -156,11 +181,11 @@ class RNPicker extends PureComponent {
     /**
      * Create safe offset to scroll
      */
-    const safeOffset = this.createSafeOffset(newOffset)
+    const safeOffsetParams = this.createSafeOffset(newOffset)
     /**
      * Start scrolling to the offset position
      */
-    this.listRef.scrollToOffset(safeOffset)
+    this.shouldWeScroll(safeOffsetParams) && this.listRef.scrollToOffset(safeOffsetParams)
   }
 
   /**
@@ -173,12 +198,52 @@ class RNPicker extends PureComponent {
   }
 
   /**
+   * This function will be called when the text on FilterBar input changed
+   * @param value The new text
+   */
+  filterBarInputChangeText = value => {
+    /**
+     * @param {Array<MSection>} createCloneData Array of MSection
+     * We need to clone this data for using with filter
+     */
+    const createCloneData = cloneDeep(this.state.cloneData)
+    /**
+     * Create new empty array MSection
+     * It will be filled by the data after passed conditions
+     */
+    const newMSectionArray = []
+    /**
+     * Loop inside the list data and compare with the conditions
+     */
+    forEach(createCloneData, mSection => {
+      const { data } = mSection
+      const newArrayData = filter(data, mItem => {
+        return mItem.title.includes(value)
+      })
+      /**
+       * Only push new data when newArrayData is greater then zero
+       * Otherwise we don't need to push it to the new list data
+       */
+      newArrayData.length > 0 && newMSectionArray.push(new MSection(mSection.title, newArrayData))
+    })
+    /**
+     * Set new data so SectionList and AlphaList can render again
+     * Besides we need to calculate totalContentLength again
+     * Because the list now is different
+     */
+    this.setState({
+      data: newMSectionArray,
+      totalContentLength: this.createTotalContentLength(newMSectionArray)
+    })
+  }
+
+  /**
    * Should we render filter bar. Check filterable property
    * @return {PureComponent} The filter bar to sort the list data
    */
   shouldRenderFilterBar = () => {
     const { filterable } = this.props
-    return filterable && <FilterBar />
+    return filterable && <FilterBar onChangeText={this.filterBarInputChangeText} />
   }
 
   /**
@@ -197,7 +262,7 @@ class RNPicker extends PureComponent {
   }
 
   render() {
-    const { data, isShowModal } = this.state
+    const { data, totalContentLength, isShowModal } = this.state
     const {
       animationType,
       renderSectionHeader,
