@@ -6,7 +6,7 @@ import { MSection } from '../../model'
 import { Header } from '../General'
 import Item from './Item'
 import Loader from '../Loader'
-import styles from './styles'
+import styles, { createHeight } from './styles'
 
 class List extends PureComponent {
   /**
@@ -18,7 +18,7 @@ class List extends PureComponent {
     const { headerHeight } = this.props
     const { title } = data.section
     return (
-      <View style={styles.height(headerHeight)}>
+      <View style={createHeight(headerHeight)}>
         <Header title={title} />
       </View>
     )
@@ -35,7 +35,7 @@ class List extends PureComponent {
     const { itemHeight, onSelect } = this.props
     return (
       <TouchableOpacity onPress={() => onSelect(item, index, section)}>
-        <View style={styles.height(itemHeight)}>
+        <View style={createHeight(itemHeight)}>
           <Item item={item} index={index} section={section} />
         </View>
       </TouchableOpacity>

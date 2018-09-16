@@ -1,9 +1,16 @@
 import { StyleSheet } from 'react-native'
-import { Metrics } from '../../theme'
+
+/**
+ * Create height for item and header
+ * @param {Number} h The height of item or header
+ * @return {StyleSheet.create({ height: h })} The header property
+ */
+const createHeight = h => StyleSheet.create({ height: h })
 
 export default StyleSheet.create({
-  height: h => ({ height: h }),
   containerStyle: {
     flexGrow: 1
   }
 })
+
+export { createHeight }
