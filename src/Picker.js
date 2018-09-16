@@ -74,7 +74,7 @@ class RNPicker extends PureComponent {
     /**
      * Check if `cb` is undefined then return
      */
-    if (!cb) return
+    if (!cb || Object.is(typeof cb, typeof Object())) return
     /**
      * Check if `cb` is a function then run it. Otherwise return error message
      */
