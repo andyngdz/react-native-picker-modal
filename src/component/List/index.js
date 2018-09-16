@@ -87,7 +87,7 @@ List.propTypes = {
   onRef: PropTypes.func.isRequired,
   itemHeight: PropTypes.number.isRequired,
   headerHeight: PropTypes.number.isRequired,
-  numToRender: PropTypes.oneOf(NumToRenderType).isRequired
+  numToRender: PropTypes.number.isRequired
 }
 
 export default List

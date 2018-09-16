@@ -2,11 +2,12 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { View, Modal, SafeAreaView } from 'react-native'
 import { takeWhile, sumBy } from 'lodash'
-import { List, Alpha } from './component'
 import { BClose } from './component/Button'
-import DataType, { BuiltInData, NumToRenderType } from './static'
-import { MSection } from './model'
+import { List, Alpha } from './component'
 import { Metrics } from './theme'
+import { MSection } from './model'
+import DataType, { BuiltInData, NumToRenderType } from './static'
+import FilterBar from './component/Filter'
 import styles from './styles'
 
 /**
@@ -175,7 +176,10 @@ class RNPicker extends PureComponent {
    * Should we render filter bar. Check filterable property
    * @return {PureComponent} The filter bar to sort the list data
    */
-  shouldRenderFilterBar = () => {}
+  shouldRenderFilterBar = () => {
+    const { filterable } = this.props
+    return filterable && <FilterBar />
+  }
 
   /**
    * Invoke the ref function to get reference of ListComponent
@@ -236,7 +240,7 @@ class RNPicker extends PureComponent {
 RNPicker.propTypes = {
   data: PropTypes.object,
   dataType: PropTypes.oneOf(DataType),
-  numToRender: PropTypes.oneOf(NumToRenderType),
+  numToRender: PropTypes.number,
   animationType: PropTypes.string,
   renderSectionHeader: PropTypes.func,
   renderItem: PropTypes.func,
