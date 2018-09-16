@@ -140,6 +140,7 @@ class RNPicker extends PureComponent {
    * In case offset is smaller than screenHeight then return
    * We don't need to scroll
    * Because in this case user already inside the viewport
+   * Special case: When offset is zero. It means user is gonna scroll to stop. We should let them scroll
    * @description The offset param was extracted from `safeOffsetParams`({animated: Boolean, offset: Number})
    * @param {Number} offset The new offset was prepared for scrolling
    * @return {Boolean} The state for telling ListComponent should scroll or not.
@@ -148,7 +149,7 @@ class RNPicker extends PureComponent {
    */
   shouldWeScroll = ({ offset }) => {
     const { screenHeight } = Metrics
-    return offset > screenHeight
+    return Object.is(offset, 0) || offset > screenHeight
   }
 
   /**
